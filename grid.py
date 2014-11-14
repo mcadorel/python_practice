@@ -8,7 +8,7 @@ from random import randint
 class Tile(object):
     """ A tile in a 2D-grid, for either ascii or graphical display.
     Possibly useful as a container for other objects (critters, 
-    items lying on ground, etc. """
+    items lying on ground, etc.) """
 
     def __init__(self, symbol='.'):
         self.symbol = str(symbol)
@@ -45,7 +45,7 @@ class Grid(dict):
     __str__ = __repr__
 
 class Screen(Grid):
-    """ Used for displaying a porting of the grid centred on a 
+    """ Used for displaying a portion of the grid centred on a 
     particular tile (roguelike-style.) """
 
     def __init__(self, root:'Grid', m=3, n=3):

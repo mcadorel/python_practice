@@ -1,6 +1,8 @@
 #-*- coding: utf-8
 # mael.cadorel@laposte.net
 
+""" Random snippets for practice."""
+
 from tkinter import *
 from PIL import ImageTk, Image
 
