@@ -1,6 +1,15 @@
+#-*- coding: utf-8
+# mael.cadorel@laposte.net
+
+""" Random snippets for practice."""
+
 from random import randint
 
 class Tile(object):
+    """ A tile in a 2D-grid, for either ascii or graphical display.
+    Possibly useful as a container for other objects (critters, 
+    items lying on ground, etc. """
+
     def __init__(self, symbol='.'):
         self.symbol = str(symbol)
 
@@ -11,10 +20,11 @@ class Tile(object):
 
 
 class Grid(dict):
+    """ A multi-purposed 2D-grid. Because wheels are for reinventing. """
     
-    def __init__(self, m, n, fill='random'):
-        self.m = m
-        self.n = n
+    def __init__(self, m:'rows', n:'columns', fill='random'):
+        self.m = m # Number of rows
+        self.n = n # Number of columns = cells per row
         dict.__init__(self)
         for i in range(m):
             self[i] = dict()
@@ -35,6 +45,8 @@ class Grid(dict):
     __str__ = __repr__
 
 class Screen(Grid):
+    """ Used for displaying a porting of the grid centred on a 
+    particular tile (roguelike-style.) """
 
     def __init__(self, root:'Grid', m=3, n=3):
         Grid.__init__(self, m, n, fill='.')
@@ -48,6 +60,7 @@ class Screen(Grid):
                 J += 1
             I += 1
 
+""" Test : """
 if __name__ == '__main__':
     G = Grid(18, 18)
     print(G)
