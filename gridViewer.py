@@ -11,35 +11,59 @@ import grid
 PATH_TO_IMG = r'./tilespoof.gif'
 
 
-class GridViewer(Tk):
-    """ Graphical window for viewing a Grid object. Needs rewriting
-    as a tkinter.Frame or tkinter.Canvas subclass, so as to support
-    proper key-binding etc. """
+class GridViewer(Frame, Canvas):
+    """ Graphical window for viewing a Grid object. """
 
-    def __init__(self, _grid):
-        Tk.__init__(self)
-        self.title('GridViewer')
-        self._grid=_grid
+    def __init__(self, _grid, _root, _width, _height, _bg):
+        self.WIDTH = _width
+        self.HEIGHT = _height
+        self._grid = _grid
+        
+        Frame.__init__(self,
+            _root,
+            width=_width,
+            height=_height,
+            bg=_bg)
+        Canvas.__init__(self,
+	    _root,
+	    width=_width,
+	    height=_height,
+	    bg=_bg)
         try:
-            self.img = ImageTk.PhotoImage(Image.open(PATH_TO_IMG))A
+            self.img = ImageTk.PhotoImage(Image.open(PATH_TO_IMG))
         except FileNotFoundError:
             print('Warning : Image file not found.')
 
+        # Determine the proportions of displayed tiles
+        self.tile_height = self.HEIGHT/self._grid.m
+        self.tile_width  = self.WIDTH/self._grid.n
+
+        # BINDINGS (only placeholder right now.)
+        self.bind(
+            sequence='<Button-1>', func=lambda event:print(
+                self.gettags(
+                    self.find_closest(
+                        event.x, event.y)[0]
+                )[0]
+            )
+        )
 
     def build(self):
         """ Attempts to bring forth a graphical rendition of the grid. """
         for _row in self._grid.keys():
             for _cell in self._grid[_row]:
-                Button(self, # Terrible idea (except perhaps if making a minesweeper kind of game.)
-                       text=str(self._grid[_row][_cell]),
-                       image=self.img,
-                       command=lambda event:print(event)).grid(
-                           row=_row, column=_cell)
-        
+                # Placeholder for actual rendition of tiles.
+                self.create_oval(
+                    _row * self.tile_height,
+                    _cell * self.tile_width,
+                    _row * self.tile_height + (self.tile_height),
+                    _cell * self.tile_width + (self.tile_width),
+                    fill='white')
 
 """ Test : """
 if __name__ == '__main__':
     G = grid.Grid(5, 5)
-    GV = GridViewer(G)
+    GV = GridViewer(G, Tk(), 300, 300, 'black')
     GV.build()
+    GV.pack()
     GV.mainloop()
