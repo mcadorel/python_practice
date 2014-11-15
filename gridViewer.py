@@ -18,6 +18,12 @@ class GridViewer(Frame, Canvas):
         self.WIDTH = _width
         self.HEIGHT = _height
         self._grid = _grid
+
+        # BINDINGS
+        self.bindings = {
+            '<Up>'  :lambda event:print('Up!'),
+            '<Down>':lambda event:print('Down!')
+            }
         
         Frame.__init__(self,
             _root,
@@ -29,24 +35,19 @@ class GridViewer(Frame, Canvas):
 	    width=_width,
 	    height=_height,
 	    bg=_bg)
+        
         try:
             self.img = ImageTk.PhotoImage(Image.open(PATH_TO_IMG))
         except FileNotFoundError:
             print('Warning : Image file not found.')
 
         # Determine the proportions of displayed tiles
-        self.tile_height = self.HEIGHT/self._grid.m
+        self.tile_height = self.HEIGHT/self._grid.m 
         self.tile_width  = self.WIDTH/self._grid.n
 
-        # BINDINGS (only placeholder right now.)
-        self.bind(
-            sequence='<Button-1>', func=lambda event:print(
-                self.gettags(
-                    self.find_closest(
-                        event.x, event.y)[0]
-                )[0]
-            )
-        )
+        # Bind keys
+        for (key, action) in self.bindings.items():
+            self.bind(key, action) # TODO (not working)
 
     def build(self):
         """ Attempts to bring forth a graphical rendition of the grid. """
@@ -59,6 +60,7 @@ class GridViewer(Frame, Canvas):
                     _row * self.tile_height + (self.tile_height),
                     _cell * self.tile_width + (self.tile_width),
                     fill='white')
+
 
 """ Test : """
 if __name__ == '__main__':

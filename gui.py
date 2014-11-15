@@ -3,8 +3,9 @@
 
 """ Random snippets for practice. """
 
-
-from tkinter import Tk, Menu
+import grid
+import gridViewer
+from tkinter import *
 
 class GUI(Tk):
     """ Generic GUI featuring a menustrip. """
@@ -17,6 +18,12 @@ class GUI(Tk):
         self.menuStrip.add_command(label="Quit", command=self.close)
         self.config(menu=self.menuStrip)
 
+        self.bind('<F11>', self.toggle_fullscreen)
+
+    def toggle_fullscreen(self):
+        pass 
+        
+
     def placeholder(self):
         print('Blargh!')
 
@@ -28,3 +35,7 @@ class GUI(Tk):
 
 if __name__=='__main__':
     g = GUI()
+    G = grid.Grid(5, 5)
+    GV = gridViewer.GridViewer(G, g, 600, 600, 'black')
+    GV.build()
+    GV.pack()
