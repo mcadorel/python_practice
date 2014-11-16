@@ -18,12 +18,6 @@ class GridViewer(Frame, Canvas):
         self.WIDTH = _width
         self.HEIGHT = _height
         self._grid = _grid
-
-        # BINDINGS
-        self.bindings = {
-            '<Up>'  :lambda event:print('Up!'),
-            '<Down>':lambda event:print('Down!')
-            }
         
         Frame.__init__(self,
             _root,
@@ -44,10 +38,6 @@ class GridViewer(Frame, Canvas):
         # Determine the proportions of displayed tiles
         self.tile_height = self.HEIGHT/self._grid.m 
         self.tile_width  = self.WIDTH/self._grid.n
-
-        # Bind keys
-        for (key, action) in self.bindings.items():
-            self.bind(key, action) # TODO (not working)
 
     def build(self):
         """ Attempts to bring forth a graphical rendition of the grid. """

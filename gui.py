@@ -18,11 +18,17 @@ class GUI(Tk):
         self.menuStrip.add_command(label="Quit", command=self.close)
         self.config(menu=self.menuStrip)
 
-        self.bind('<F11>', self.toggle_fullscreen)
-
-    def toggle_fullscreen(self):
-        pass 
+        # BINDINGS
+        self.bindings = {
+            '<Up>'  :lambda event:print('Up!'),
+            '<Down>':lambda event:print('Down!'),
+            '<Left>'  :lambda event:print('Left!'),
+            '<Right>':lambda event:print('Right!')
+            }
         
+        # Bind keys
+        for (key, action) in self.bindings.items():
+            self.bind(key, action) # TODO (not working)
 
     def placeholder(self):
         print('Blargh!')
