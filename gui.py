@@ -9,7 +9,7 @@ import gridViewer
 from tkinter import *
 
 class GUI(Tk):
-    """ Generic GUI featuring a menustrip. """
+    """ Generic GUI featuring a menustrip, fullscreen mode, ... """
     
     def __init__(self):
         Tk.__init__(self)
@@ -37,9 +37,14 @@ class GUI(Tk):
             ('<F11>'     , self.toggle_fullscreen)
             ])
         
-        # Bind keys
         for (key, action) in self.bindings.items():
             self.bind(key, action)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, traceback):
+        self.close()
 
     def toggle_fullscreen(self, event):
         """ Same func for turning it on and off. """
@@ -61,6 +66,7 @@ class GUI(Tk):
                     *self.sizeBuffer
                     )
                 )
+            del self.sizeBuffer
             self.fullscreen = False
 
     def placeholder(self):
@@ -69,12 +75,19 @@ class GUI(Tk):
     def close(self):
         """ Needs serious rewriting... Perhaps consider using GUI with context
         manager, with proper __enter__ and __exit__ methods. """
-        exit()
+        self.destroy()
+        print('Quitting...')
+        exit(0)
 
 
 if __name__=='__main__':
-    g = GUI()
-    G = grid.Grid(5, 5)
-    GV = gridViewer.GridViewer(G, g, 600, 600, 'black')
-    GV.build()
-    GV.pack()
+    with GUI() as someGui:
+        someGrid = grid.Grid(5, 5)
+        someGridViewer = gridViewer.GridViewer(
+            someGrid,
+            someGui,
+            600, 600,
+            'black')
+        someGridViewer.build()
+        someGridViewer.pack()
+        someGui.mainloop()
