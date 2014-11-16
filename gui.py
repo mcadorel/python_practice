@@ -3,6 +3,7 @@
 
 """ Random snippets for practice. """
 
+from collections import OrderedDict
 import grid
 import gridViewer
 from tkinter import *
@@ -16,25 +17,32 @@ class GUI(Tk):
         self.fullscreen = False
 
         # MENU
+        self.menu_options = OrderedDict([
+            ('Placeholder'  , self.placeholder),
+            ('Quit'         , self.close)
+            ])
+
+
         self.menuStrip = Menu(self)
-        self.menuStrip.add_command(label="Hello", command=self.placeholder)
-        self.menuStrip.add_command(label="Quit", command=self.close)
+        for (_label, action) in self.menu_options.items():
+            self.menuStrip.add_command(label=_label, command=action)
         self.config(menu=self.menuStrip)
 
         # BINDINGS
-        self.bindings = {
-            '<Up>'      : lambda event: print('Up!'),
-            '<Down>'    : lambda event: print('Down!'),
-            '<Left>'    : lambda event: print('Left!'),
-            '<Right>'   : lambda event: print('Right!'),
-            '<F11>'     : self.toggle_fullscreen
-            }
+        self.bindings = OrderedDict([
+            ('<Up>'      , lambda event: print('Up!')),
+            ('<Down>'    , lambda event: print('Down!')),
+            ('<Left>'    , lambda event: print('Left!')),
+            ('<Right>'   , lambda event: print('Right!')),
+            ('<F11>'     , self.toggle_fullscreen)
+            ])
         
         # Bind keys
         for (key, action) in self.bindings.items():
             self.bind(key, action)
 
     def toggle_fullscreen(self, event):
+        """ Same func for turning it on and off. """
         if not self.fullscreen:
             self.sizeBuffer = (self.winfo_height(), self.winfo_width())
             self.geometry(
