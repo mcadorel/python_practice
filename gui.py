@@ -22,7 +22,6 @@ class GUI(Tk):
             ('Quit'         , self.close)
             ])
 
-
         self.menuStrip = Menu(self)
         for (_label, action) in self.menu_options.items():
             self.menuStrip.add_command(label=_label, command=action)
@@ -73,13 +72,12 @@ class GUI(Tk):
         print('Blargh!')
 
     def close(self):
-        """ Needs serious rewriting... Perhaps consider using GUI with context
-        manager, with proper __enter__ and __exit__ methods. """
+        """ Close application (not just root window.) """
         self.destroy()
         print('Quitting...')
         exit(0)
 
-
+# Test 
 if __name__=='__main__':
     with GUI() as someGui:
         someGrid = grid.Grid(5, 5)
@@ -89,5 +87,5 @@ if __name__=='__main__':
             600, 600,
             'black')
         someGridViewer.build()
-        someGridViewer.pack()
+        someGridViewer.grid(row=0, column=0, sticky=NW)
         someGui.mainloop()
