@@ -50,19 +50,36 @@ class Screen(Grid):
 
     def __init__(self, root:'Grid', m=3, n=3):
         Grid.__init__(self, m, n, fill='.')
+        self.root = root
+        self.m = m
+        self.n = n
+
+        # By default, a Screen is centred on the centre of the Grid it depicts
         self.curX = root.m //2
         self.curY = root.n //2
+
+    def build(self):
+        """ Builds from original grid. """
         I = 0
-        for i in range(self.curX-(m//2)-1, self.curX+(m//2)):
+        for i in range(self.curX-(self.m//2)-1, self.curX+(self.m//2)):
             J = 0
-            for j in range(self.curY-(n//2)-1, self.curY+(n//2)):
-                self[I][J] = root[i][j]
+            for j in range(self.curY-(self.n//2)-1, self.curY+(self.n//2)):
+                self[I][J] = self.root[i][j]
                 J += 1
             I += 1
+
+    def offset(self, x, y):
+        """ Moves (centres) the Screen onto another tile. x is horizontal, y is vertical. """
+        self.curX += x
+        self.curY += y
+        self.build() # TODO : definitely suboptimal
 
 """ Test : """
 if __name__ == '__main__':
     G = Grid(18, 18)
     print(G)
     S = Screen(G)
+    S.build()
+    print(S)
+    S.offset(0, 3)
     print(S)
