@@ -69,17 +69,49 @@ class Screen(Grid):
             I += 1
 
     def offset(self, x, y):
-        """ Moves (centres) the Screen onto another tile. x is horizontal, y is vertical. """
-        self.curX += x
-        self.curY += y
+        """ Moves (centres) the Screen onto another tile. x is vertical, y is horizontal. """ # needs swapping x and y!
+        xmin = 1 + (self.n//2)
+        xmax = self.root.n - (self.n//2)
+        ymin = 1 + (self.m//2)
+        ymax = self.root.m - (self.m//2)
+
+        if self.curX + x <= xmin:       # bump north
+            self.curX = xmin
+        elif self.curX + x >= xmax:     # bump south
+            self.curX = xmax
+        else:
+            self.curX += x
+            
+        if self.curY + y <= ymin:       # bump west
+            self.curY = ymin
+        elif self.curY + y >= ymax:     # bump east
+            self.curY = ymax
+        else:
+            self.curY += y
+
         self.build() # TODO : definitely suboptimal
 
-""" Test : """
+# Test :
 if __name__ == '__main__':
     G = Grid(18, 18)
     print(G)
+    
     S = Screen(G)
     S.build()
     print(S)
-    S.offset(0, 3)
+    
+    print('\nBumping east : ')
+    S.offset(0, 12)
+    print(S)
+    
+    print('\nBumping north : ')
+    S.offset(-64, 0)
+    print(S)
+
+    print('\nBumping south : ')
+    S.offset(1281, 0)
+    print(S)
+
+    print('\nBumping west : ')
+    S.offset(0, -17)
     print(S)
