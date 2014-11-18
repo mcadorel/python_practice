@@ -20,10 +20,16 @@ class App(object):
         self.gui = GUI()
 
         self.data['grid']           = Grid(15, 15, fill='.') # "Let's pretend" this is a world map or whatever
-        self.data['currentScreen']  = Screen(self.data['grid'])
-
 
 # Test
 if __name__ == '__main__':
     someApp = App()
+    gv = GridViewer(
+        Screen(someApp.data['grid']),
+        someApp.gui,
+        200,
+        200,
+        'black')
+    gv.build()
+    gv.grid(row=0, column=0)
     
