@@ -75,16 +75,16 @@ class Screen(Grid):
         ymin = 1 + (self.m//2)
         ymax = self.root.m - (self.m//2)
 
-        if self.curX + x <= xmin:       # bump north
+        if self.curX + x < xmin:       # bump north
             self.curX = xmin
-        elif self.curX + x >= xmax:     # bump south
+        elif self.curX + x > xmax:     # bump south
             self.curX = xmax
         else:
             self.curX += x
             
-        if self.curY + y <= ymin:       # bump west
+        if self.curY + y < ymin:       # bump west
             self.curY = ymin
-        elif self.curY + y >= ymax:     # bump east
+        elif self.curY + y > ymax:     # bump east
             self.curY = ymax
         else:
             self.curY += y
