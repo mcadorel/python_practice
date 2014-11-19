@@ -51,8 +51,17 @@ class GridViewer(Frame, Canvas):
                     _cell * self.tile_width + (self.tile_width),
                     fill='white')
 
+    def highlight(self, x:'row', y:'column'):
+        """ Temporary, just for debugging. """
+        tile_coords = (
+            x * self.tile_width + (self.tile_width / 2),
+            y * self.tile_height + (self.tile_height / 2)
+            )
+        self.find_closest(*tile_coords).configure(fill='red') # TODO : find_closest returns a tuple
+        
 
-""" Test : """
+
+# Test :
 if __name__ == '__main__':
     G = grid.Grid(5, 5)
     GV = GridViewer(G, Tk(), 300, 300, 'black')
