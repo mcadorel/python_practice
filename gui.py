@@ -43,18 +43,21 @@ class GUI(Tk):
         return self
 
     def __exit__(self, type, value, traceback):
-        self.close()
+        self.close() # TODO exceptions be here
 
     def move(self, event):
-        """ Send the instruction to move toward <Direction> to first GridViewer widget """
-        print(event.keysym)
+        """ Send the instruction to move toward <Direction> to first GridViewer widget. """
         try:
-            # Probably a better idea to store theGridViewer into class scope (self.theGridViewer)
-            # once and for good. Also couldn't come up with a better name...
             theGridViewer = next(widget for widget in self.grid_slaves() if type(widget) == gridViewer.GridViewer)
 
             if event.keysym == 'Up':
                 theGridViewer._grid.offset(-1,0)
+            elif event.keysym == 'Down':
+                theGridViewer._grid.offset(1,0)
+            elif event.keysym == 'Left':
+                theGridViewer._grid.offset(0,-1)
+            elif event.keysym == 'Right':
+                theGridViewer._grid.offset(0,1)
 
         except StopIteration:
             print('Can\'t move {} : no GridViewer loaded into GUI.'.format(direction))
