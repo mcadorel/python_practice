@@ -29,10 +29,10 @@ class GUI(Tk):
 
         # BINDINGS
         self.bindings = OrderedDict([
-            ('<Up>'      , lambda event: print('Up!')),
-            ('<Down>'    , lambda event: print('Down!')),
-            ('<Left>'    , lambda event: print('Left!')),
-            ('<Right>'   , lambda event: print('Right!')),
+            ('<Up>'      , self.move),
+            ('<Down>'    , self.move),
+            ('<Left>'    , self.move),
+            ('<Right>'   , self.move),
             ('<F11>'     , self.toggle_fullscreen)
             ])
         
@@ -44,6 +44,20 @@ class GUI(Tk):
 
     def __exit__(self, type, value, traceback):
         self.close()
+
+    def move(self, event):
+        """ Send the instruction to move toward <Direction> to first GridViewer widget """
+        print(event.keysym)
+        try:
+            # Probably a better idea to store theGridViewer into class scope (self.theGridViewer)
+            # once and for good. Also couldn't come up with a better name...
+            theGridViewer = next(widget for widget in self.grid_slaves() if type(widget) == gridViewer.GridViewer)
+
+            if event.keysym == 'Up':
+                theGridViewer._grid.offset(-1,0)
+
+        except StopIteration:
+            print('Can\'t move {} : no GridViewer loaded into GUI.'.format(direction))
 
     def toggle_fullscreen(self, event):
         """ Same func for turning it on and off. """
@@ -80,9 +94,10 @@ class GUI(Tk):
 # Test 
 if __name__=='__main__':
     with GUI() as someGui:
-        someGrid = grid.Grid(5, 5)
+        someScreen = grid.Screen(grid.Grid(9,9))
+        someScreen.build()
         someGridViewer = gridViewer.GridViewer(
-            someGrid,
+            someScreen,
             someGui,
             600, 600,
             'black')
